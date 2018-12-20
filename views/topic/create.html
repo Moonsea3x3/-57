@@ -33,10 +33,15 @@
         $("#form").on("submit",function(e){
           e.preventDefault();
           var formdata = $(this).serialize();
-          $.post("/creteTopic",formdata,function(data){
+          $.post("/createTopic",formdata,function(data){
             console.log(data);
+            if(data.code === 200){
+              //重定向到列表页
+              window.location.href = "/";
+            }
           })
         })
+       
     </script>
 </body>
 
