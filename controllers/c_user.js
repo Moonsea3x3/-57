@@ -12,7 +12,7 @@ exports.handleSignin = (req,res)=>{
     console.log(body);
     //使用m_user中的方法
     //在这个位置使用数据库操作的结果(err,data)
-M_user.checkEmail(body.email, 
+  M_user.checkEmail(body.email, 
     (err,data)=>{
       if(err){
        return res.send({
@@ -47,5 +47,14 @@ M_user.checkEmail(body.email,
           msg:"可以登录"
      });
    })
+  };
+  
+  
+  
+  //处理用户退出的请求
+  exports.handleSignout = (req,res) =>{
+    //1.清除session中的user信息
+    delete req.session.user;
+    //2.回到登录页
+    res.redirect("/signin");
   }
-   

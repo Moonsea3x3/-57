@@ -12,7 +12,13 @@ router
 .post("/signin",c_user.handleSignin)
 .get("/",c_topic.showTopicList)
 .get("/topic/create",c_topic.showCreateTopic)
-.post("/createTopic",c_topic.handleCreateTopic);
+.post("/createTopic",c_topic.handleCreateTopic)
+.get("/signout",c_user.handleSignout)
+.get("/detail/topic/:topicID",c_topic.showTopicDetail)
+.get("/topic/:topicID/delete",c_topic.handleDeleTopic)
+.get("/topic/:topicID/edit",c_topic.showEditTopic)
+.post("/edit/topic/:topicID",c_topic.handleEditTopic);
+
 
 //4.导出
 module.exports = router;
