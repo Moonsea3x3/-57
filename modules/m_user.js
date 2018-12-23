@@ -13,3 +13,28 @@ exports.checkEmail = (email,callback) =>{
       }
     });  
   }
+//验证昵称
+//方法中使用数据 该数据来源可以为 
+//1.可以在方法外部声明
+//2.可以在该函数调用时传实参
+exports.checkNickname =(nickname,callback)=>{
+  const sqlstr = 'SELECT *FROM `users` WHERE nickname=?';
+  connection.query(sqlstr,nickname,(err,data)=>{
+    if(err){
+      return callback(err,null);
+    }
+      callback(null,data);
+    
+  });
+};
+
+//添加新用户
+exports.addUser =(body,callback)=>{
+  const sqlstr = 'INSERT INTO `users` SET ?';
+  connection.query(sqlstr,body,(err,data)=>{
+    if(err){
+      return callback(err,null);
+    }
+    callback(null,data);
+  })
+}

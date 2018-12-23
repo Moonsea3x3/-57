@@ -24,7 +24,7 @@
           <a class="btn btn-success" href="/">返回首页</a> {{else}}
           <article class="markdown-body">
             <h1>{{ topic.title }}</h1>
-            {{if sessionUserId===topic.userId}}
+            {{if sessionUser.id===topic.userId}}
             <a href="/topic/{{ topic.id }}/edit">编辑</a>
             <a href="/topic/{{ topic.id }}/delete" id="delete_topic">删除</a>
             {{/if}}

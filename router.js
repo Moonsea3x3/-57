@@ -17,7 +17,9 @@ router
 .get("/detail/topic/:topicID",c_topic.showTopicDetail)
 .get("/topic/:topicID/delete",c_topic.handleDeleTopic)
 .get("/topic/:topicID/edit",c_topic.showEditTopic)
-.post("/edit/topic/:topicID",c_topic.handleEditTopic);
+.post("/edit/topic/:topicID",c_topic.handleEditTopic)
+.get("/signup",c_user.showSignup)
+.post("/signup",c_user.handleSignup);
 
 
 //4.导出

@@ -3,10 +3,10 @@
 const M_user = require('../modules/m_user');
 
 //处理客户端登录请求
-exports.showSignin = (req,res)=>{
+exports.showSignin = (req,res,next)=>{
   res.render("signin.html");
 };
-exports.handleSignin = (req,res)=>{
+exports.handleSignin = (req,res,next)=>{
     //1.获取表单数据req.body
     const body = req.body;
     console.log(body);
@@ -15,10 +15,7 @@ exports.handleSignin = (req,res)=>{
   M_user.checkEmail(body.email, 
     (err,data)=>{
       if(err){
-       return res.send({
-          code:500,
-          msg:"服务器出现错误"
-        })
+       return next(err);
       };
       //data数组 如果邮箱不存在
       if(data.length === 0){
@@ -52,9 +49,57 @@ exports.handleSignin = (req,res)=>{
   
   
   //处理用户退出的请求
-  exports.handleSignout = (req,res) =>{
+  exports.handleSignout = (req,res,next) =>{
     //1.清除session中的user信息
     delete req.session.user;
     //2.回到登录页
     res.redirect("/signin");
   }
+
+  //渲染注册页面
+  exports.showSignup = (req,res,next)=>{
+    res.render("signup.html");
+  }
+
+exports.handleSignup =(req,res,next)=>{
+  //1.获取表单数据
+  const body = req.body;
+
+  //2.先验证邮箱是否存在(body.email ===数据库)
+  //如果存在 返回响应
+  M_user.checkEmail(body.email,(err,data)=>{
+    if(err){
+      return next(err);
+    }
+    if(data[0]){
+      return res.send({
+        code:1,
+        msg:"邮箱存在"
+      });
+    }
+    //3.如果邮箱不存在 ->验证昵称
+    //如果存在 返回响应
+    M_user.checkNickname(body.nickname,(err,data)=>{
+      if(err){
+        return next(err);
+      }
+      if(data[0]){
+        return res.send({
+          code:2,
+          msg:"昵称存在"
+        })
+      }
+      //4.如果昵称不存在 - 可以添加新用户
+      M_user.addUser(body,(err,data)=>{
+        if(err){
+         return next(err);
+        }
+        //5.返回200响应
+        res.send({
+          code:200,
+          msg:"添加成功"
+        })
+      })
+    });
+  });
+}
